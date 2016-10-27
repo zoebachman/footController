@@ -27,27 +27,45 @@
 
  */
 
-int sensorPin = A0;    // select the input pin for the potentiometer
-int ledPin = 13;      // select the pin for the LED
+int sensorPinTop = A0;
+int sensorPinBottom = A1;
+int ledPinTop = 12;
+int ledPinBottom = 13; // select the pin for the LED
 int sensorValue = 0;  // variable to store the value coming from the sensor
-int force; 
+int top; 
+int bottom;
 
 void setup() {
   // declare the ledPin as an OUTPUT:
   Serial.begin(9600);   
-  pinMode(ledPin, OUTPUT);
+  pinMode(ledPinTop, OUTPUT);
+  pinMode(ledPinBottom, OUTPUT);
 }
 
 void loop() {
 
-  force = analogRead(sensorPin);  // Reads the FSR
-  Serial.print("Analog reading = "); 
-  Serial.println(force);
+  top = analogRead(sensorPinTop);  // Reads the FSR
+  bottom = analogRead(sensorPinBottom); 
+  Serial.print("Analog reading Top = "); 
+  Serial.println(top);
+  Serial.print("Analog reading Bottom= "); 
+  Serial.println(bottom);
 
-  if (force < 600){
-    digitalWrite(ledPin, LOW);
+  if (top < 600){
+    digitalWrite(ledPinTop, LOW);
   } else {
-    digitalWrite(ledPin, HIGH);
+    digitalWrite(ledPinTop, HIGH);
   }
   delay(150);
+
+  if (bottom < 500){
+    digitalWrite(ledPinBottom, LOW);
+  } else {
+    digitalWrite(ledPinBottom, HIGH);
+  }
+  delay(150);
+
+  
 }
+//top - 470
+//bottom - 540
