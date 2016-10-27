@@ -39,19 +39,15 @@ void setup() {
 }
 
 void loop() {
-//  // read the value from the sensor:
-//  sensorValue = analogRead(sensorPin);
-//  // turn the ledPin on
-//  digitalWrite(ledPin, HIGH);
-//  // stop the program for <sensorValue> milliseconds:
-//  delay(sensorValue);
-//  // turn the ledPin off:
-//  digitalWrite(ledPin, LOW);
-//  // stop the program for for <sensorValue> milliseconds:
-//  delay(sensorValue);
 
   force = analogRead(sensorPin);  // Reads the FSR
   Serial.print("Analog reading = "); 
   Serial.println(force);
+
+  if (force < 600){
+    digitalWrite(ledPin, LOW);
+  } else {
+    digitalWrite(ledPin, HIGH);
+  }
   delay(150);
 }
