@@ -26,45 +26,49 @@
  http://www.arduino.cc/en/Tutorial/AnalogInput
 
  */
-
+//#declare A1 = INPUT;
 int sensorPinTop = A0;
 int sensorPinBottom = A1;
-int ledPinTop = 12;
-int ledPinBottom = 13; // select the pin for the LED
+int ledPinTop = 12; //redLED
+int ledPinBottom = 13; // select the pin for the greenLED
 int sensorValue = 0;  // variable to store the value coming from the sensor
-int top; 
-int bottom;
+int u; 
+int d;
 
 void setup() {
   // declare the ledPin as an OUTPUT:
   Serial.begin(9600);   
   pinMode(ledPinTop, OUTPUT);
   pinMode(ledPinBottom, OUTPUT);
+  pinMode(sensorPinTop, INPUT);
+  pinMode(sensorPinBottom, INPUT);
 }
 
 void loop() {
 
-  top = analogRead(sensorPinTop);  // Reads the FSR
-  bottom = analogRead(sensorPinBottom); 
-  Serial.print("Analog reading Top = "); 
-  Serial.println(top);
-  Serial.print("Analog reading Bottom= "); 
-  Serial.println(bottom);
+  u = analogRead(sensorPinTop);  // Reads the top FSR
+  d = analogRead(sensorPinBottom); //reads bottom FSR
 
-  if (top < 600){
+  
+  if (u < 400){
     digitalWrite(ledPinTop, LOW);
   } else {
     digitalWrite(ledPinTop, HIGH);
+//    Serial.println(top);
+    Serial.println("u");
   }
   delay(150);
 
-  if (bottom < 500){
+  if (d < 500){
     digitalWrite(ledPinBottom, LOW);
   } else {
     digitalWrite(ledPinBottom, HIGH);
+    //Serial.println(bottom);
+    Serial.println("d");
   }
   delay(150);
 
+//can try with the opposite - when bottom isn't touching, turn on top, etc. 
   
 }
 //top - 470
