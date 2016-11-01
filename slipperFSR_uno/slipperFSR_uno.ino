@@ -15,6 +15,7 @@
 //const int rightLED = 6;       // this LED indicates that you're moving right
 const int upLED = 12;          // this LED indicates that you're moving uo
 const int downLED = 13;        // this LED indicates that you're moving down
+const int connectButton = A3;
 
 const int sendInterval = 50;      // minimum time between messages to the server
 const int debounceInterval = 15;  // used to smooth out pushbutton readings
@@ -27,6 +28,7 @@ int sensorPinBottom = A1;
 int topSensor;
 int bottomSensor;
 
+int lastButtonState = 0;     // previous state of the pushbutton
 long lastTimeSent = 0;       // timestamp of the last server message
 boolean connected = false;
 
@@ -38,6 +40,7 @@ void setup() {
   // pinMode(rightLED, OUTPUT);
   pinMode(upLED, OUTPUT);
   pinMode(downLED, OUTPUT);
+  pinMode(connectButton, INPUT);
 
   // configure analog pins for slipper:
   pinMode(sensorPinTop, INPUT);
@@ -45,7 +48,7 @@ void setup() {
 
   //  pinMode(A0, OUTPUT);
   //  pinMode(A4, OUTPUT);
-  ////  pinMode(A3, INPUT_PULLUP);    // joystick pushbutton
+  pinMode(A3, INPUT_PULLUP);    // joystick pushbutton
   //  // turn on A0 for +v connection of joystick:
   //  digitalWrite(A0, HIGH);
   //  // turn off A4 for gnd connection of joystick:
@@ -66,7 +69,12 @@ void loop() {
 
   // note the current time in milliseconds:
   long now = millis();
-
+  // check to see if the pushbutton's pressed: 
+  boolean buttonPushed = buttonRead(connectButton);
+   if the button's just pressed:
+    if (buttonPushed) {
+     Serial.print('x');
+   }
 
   // if the client's connected, and the send interval has elapased:
   if (now - lastTimeSent > sendInterval) {
@@ -94,13 +102,49 @@ void loop() {
     //Serial.println(bottom);
     Serial.println("d");
   }
-
+  
+ delay(150);
 
   //save this moment as last time you sent a message:
   lastTimeSent = now;
 }
 
+// this method reads the button to see if it's just changed
+// from low to high, and debounces the button in case of
+// electrical noise:
 
+boolean buttonRead(int thisButton) {
+  boolean result = false;
+  // temporary state of the button:
+  int currentState = !digitalRead(thisButton);
+  // final state of the button:
+  int buttonState = lastButtonState;
+  // get the current time to time the debounce interval:
+  long lastDebounceTime = millis();
+
+  while ((millis() - lastDebounceTime) < debounceInterval) {
+    // read the state of the switch into a local variable:
+    currentState = !digitalRead(thisButton);
+
+    // If the pushbutton changed due to noise:
+    if (currentState != buttonState) {
+      // reset the debouncing timer
+      lastDebounceTime = millis();
+    }
+
+    // whatever the reading is at, it's been there for longer
+    // than the debounce delay, so take it as the actual current state:
+    buttonState = currentState;
+  }
+  // if the button's changed and it's high:
+  if (buttonState != lastButtonState && buttonState == HIGH) {
+    result = true;
+  }
+
+  // save the current state for next time:
+  lastButtonState = buttonState;
+  return result;
+}
 
 
 

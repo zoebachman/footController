@@ -23,10 +23,15 @@ var net = require('net'),				// make an instance of the net library
 	input = '';								// input string from the keyboard (STDIN)
 
 var serialport = require("serialport"),	// include the serialport library
-	SerialPort  = serialport.SerialPort,	// make a local instance of it
+	SerialPort  = serialport//.SerialPort,	// make a local instance of it
 	portName = process.argv[2];				// get the serial port name from the command line
 	serverAddress = process.argv[3], 		// get the server address from the command line
 	portNumber = process.argv[4];				// get the port number from the command line
+
+
+	// serial port name = /dev/cu.usbmodem1421
+	//ipaddress = 172.16.222.142
+	// port number = 8080
 
 var connected = false;							// if client is connected
 
@@ -58,13 +63,14 @@ myPort.on('open', function() {
 		if (connected) {
 			client.write(data);
 		}
+		// console.log("got here")
 		
 		// run through all the bytes in the incoming data string:
 		for (var c=0; c<data.length; c++) {
 			// convert each byte to its unicode character:
 			var thisByte = String.fromCharCode(data[c]);
 			console.log(thisByte);
-			// if the byte is x and you're not connected, connect:
+			//if the byte is x and you're not connected, connect:
 			if (thisByte === 'x' && !connected) {
 				console.log("I am connecting");
 				// connect to the server:
@@ -73,22 +79,23 @@ myPort.on('open', function() {
 			} 
 		}
 	
-		// this function runs when the client successfully connects:
+		// this function runs when the client successfully connects: NOT WORKING!
 		function login() {
+			
 			client.setEncoding('utf8');	// encode everything sent by the client as a string
 			console.log('Connected');
 			connected = true;
 		
 		  	// this function runs if the server sends data:
-			client.on('data', function(data) {
-				data = data.trim();							// trim any whitespace from the string
-				console.log('Server said ' + data);
-				// only send hi or bye on to the client, since Arduino code
-				// doesn't look for other messages:
-				if (data === 'hi' || data === 'bye') {
-					myPort.write(data);
-				}
-			});
+			// client.on('data', function(data) {
+			// 	data = data.trim();							// trim any whitespace from the string
+			// 	console.log('Server said ' + data);
+			// 	// only send hi or bye on to the client, since Arduino code
+			// 	// doesn't look for other messages:
+			// 	if (data === 'hi' || data === 'bye') {
+			// 		myPort.write(data);
+			// 	}
+			// });
 			
 		  	// this function runs if the client ends from the server:	
 			client.on('end', function() {
