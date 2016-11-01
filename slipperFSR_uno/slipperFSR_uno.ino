@@ -48,7 +48,7 @@ void setup() {
 
   //  pinMode(A0, OUTPUT);
   //  pinMode(A4, OUTPUT);
-  pinMode(A3, INPUT_PULLUP);    // joystick pushbutton
+  //pinMode(A3, INPUT_PULLUP);    // joystick pushbutton
   //  // turn on A0 for +v connection of joystick:
   //  digitalWrite(A0, HIGH);
   //  // turn off A4 for gnd connection of joystick:
@@ -71,7 +71,8 @@ void loop() {
   long now = millis();
   // check to see if the pushbutton's pressed: 
   boolean buttonPushed = buttonRead(connectButton);
-   if the button's just pressed:
+  
+   //if the button's just pressed:
     if (buttonPushed) {
      Serial.print('x');
    }
@@ -89,7 +90,7 @@ void loop() {
   } else {
     digitalWrite(upLED, HIGH);
     //    Serial.println(top);
-    Serial.println("u");
+    Serial.println("l");
 
   }
 
@@ -100,7 +101,7 @@ void loop() {
   } else {
     digitalWrite(downLED, HIGH);
     //Serial.println(bottom);
-    Serial.println("d");
+    Serial.println("r");
   }
   
  delay(150);

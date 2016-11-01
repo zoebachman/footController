@@ -83,22 +83,27 @@ void loop() {
     char input = Serial.read();
     // turn on the LEDs depending on what comes in the serial:
     switch (input) {
+      
       case 'l':       // left
         digitalWrite(leftPin, HIGH);
         socket.print(input);
         break;
+        
       case 'r':       // right
         socket.print(input);
         digitalWrite(rightPin, HIGH);
         break;
+        
       case 'u':       // up
         socket.print(input);
         digitalWrite(upPin, HIGH);
         break;
+        
       case 'd':      // down
         socket.print(input);
         digitalWrite(downPin, HIGH);
         break;
+        
       case '1':      // button pushed
         if (socket.connected()) {   // if the socket's connected, disconnect
           socket.print('x');        // by sending an x

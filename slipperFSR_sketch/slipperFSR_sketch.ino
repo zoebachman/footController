@@ -27,8 +27,8 @@
 
  */
 //#declare A1 = INPUT;
-int sensorPinTop = A0;
-int sensorPinBottom = A1;
+int sensorPinTop = A1;
+int sensorPinBottom = A0;
 int ledPinTop = 12; //redLED
 int ledPinBottom = 13; // select the pin for the greenLED
 int sensorValue = 0;  // variable to store the value coming from the sensor
